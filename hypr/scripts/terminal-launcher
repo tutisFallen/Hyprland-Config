@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if command -v kitty &>/dev/null; then
+    kitty --class=terminal
+elif command -v alacritty &>/dev/null; then
+    alacritty --class=terminal
+elif command -v ghostty &>/dev/null; then
+    ghostty --class=terminal
+else
+    echo "Nenhum terminal encontrado." >&2
+fi
