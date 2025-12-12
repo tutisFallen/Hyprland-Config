@@ -1,3 +1,6 @@
+![alt text](image.png)
+
+
 ## 🚀 DarkMatterShell + Hyprland Auto Installer
 
 Um instalador automático e robusto para configurar um ambiente de desktop completo, minimalista e altamente personalizável com **Hyprland**, **DankMaterialShell**, o tema visual **GNOME macOS Tahoe**, pacotes essenciais e ajustes padrões no Arch Linux e derivados.
