@@ -1,0 +1,6 @@
+{
+  "updateInterval": 2100000,
+  "configuredTerminal": "kitty -e",
+  "configuredIcon": "world-download",
+  "hideOnZero": true
+}
