@@ -2,9 +2,13 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export TERMINAL='kitty'
 
-# fzf + eza defaults
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=bg+:#1f2335,bg:#0f111a,spinner:#7aa2f7,hl:#7aa2f7 --color=fg:#c8d3f5,header:#7aa2f7,info:#a6da95,pointer:#f7768e --color=marker:#f5a97f,fg+:#d6e3ff,prompt:#89b4fa,hl+:#89b4fa'
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+if command -v fd >/dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+fi
+export FZF_DEFAULT_OPTS='--height 45% --layout=reverse --border --color=bg+:#313244,bg:#11111b,fg:#cdd6f4,header:#89b4fa,hl:#89b4fa,pointer:#f38ba8,marker:#f9e2af,prompt:#a6e3a1'
 
-# eza theme-ish behavior
-export EZA_COLORS='da=38;5;110:gm=38;5;147:sn=38;5;179:uu=38;5;180'
+if command -v bat >/dev/null 2>&1; then
+  export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always {}"'
+else
+  export FZF_CTRL_T_OPTS='--preview "sed -n 1,200p {}"'
+fi
