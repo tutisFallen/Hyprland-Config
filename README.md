@@ -1,30 +1,31 @@
 # Hyprland-Config (stack personalizada)
 
-Base de dotfiles focada no seu setup atual:
-
+Stack atual:
 - Hyprland
-- Kitty
+- Kitty (tema glass/tahoe)
 - Yazi
 - Thunar
 - Quickshell
 - Ambxst
+- Shell aliases + Starship + fzf + eza + nvim base
 
-## Estrutura
-
-- `dotfiles/hypr` → `~/.config/hypr`
-- `dotfiles/kitty` → `~/.config/kitty`
-- `dotfiles/yazi` → `~/.config/yazi`
-- `dotfiles/thunar` → `~/.config/Thunar`
-- `dotfiles/quickshell` → `~/.config/quickshell`
-- `dotfiles/ambxst` → `~/.config/ambxst`
-
-## Aplicar
+## Instalação
 
 ```bash
 bash install.sh
 ```
 
-## Próximo passo
+## Aliases úteis
 
-Depois que você definir exatamente o que quer em cada pasta,
-montamos o instalador final em **Lua ou Go** para automatizar tudo.
+- Pacman: `pss`, `psi`, `psr`, `pqs`
+- Yay: `yss`, `ysi`, `yrm`, `yqq`
+- Navegação: `fm` (yazi), `cdf` (cd + fzf)
+- Listing: `ls`, `ll`, `lt` com `eza --icons`
+- Neovim: `v`, `vi`, `vim`, `nv`
+
+## Shell
+
+O script adiciona source em `~/.bashrc` para:
+- `~/.config/shell/env.sh`
+- `~/.config/shell/aliases.sh`
+- `~/.config/shell/starship-init.sh`

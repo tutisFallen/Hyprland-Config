@@ -1,0 +1,35 @@
+add_newline = true
+
+format = """
+$os$username$hostname$directory$git_branch$git_status$nodejs$rust$golang$lua$python$line_break$character
+"""
+
+[character]
+success_symbol = "[❯](bold #7aa2f7)"
+error_symbol = "[❯](bold #f7768e)"
+
+[directory]
+style = "bold #9ec7ff"
+truncate_to_repo = true
+truncation_length = 4
+
+[git_branch]
+symbol = " "
+style = "bold #a6da95"
+
+[git_status]
+style = "#f5a97f"
+
+[os]
+disabled = false
+style = "#8aadf4"
+
+[username]
+show_always = true
+style_user = "#c6a0f6"
+format = "[$user]($style)@"
+
+[hostname]
+ssh_only = false
+style = "#f0c6c6"
+format = "[$hostname]($style) "
