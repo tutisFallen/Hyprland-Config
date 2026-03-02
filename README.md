@@ -1,24 +1,30 @@
-# Hyprland Dotfiles
+# Hyprland-Config (stack personalizada)
 
-Configuração base para Arch + Hyprland, feita para setup rápido de um sistema novo.
+Base de dotfiles focada no seu setup atual:
+
+- Hyprland
+- Kitty
+- Yazi
+- Thunar
+- Quickshell
+- Ambxst
 
 ## Estrutura
 
-- `dotfiles/hypr` → Hyprland, hypridle, hyprlock
-- `dotfiles/waybar` → barra
-- `dotfiles/kitty` → terminal
-- `dotfiles/wofi` → launcher
-- `dotfiles/swaync` → notificações
+- `dotfiles/hypr` → `~/.config/hypr`
+- `dotfiles/kitty` → `~/.config/kitty`
+- `dotfiles/yazi` → `~/.config/yazi`
+- `dotfiles/thunar` → `~/.config/Thunar`
+- `dotfiles/quickshell` → `~/.config/quickshell`
+- `dotfiles/ambxst` → `~/.config/ambxst`
 
-## Instalação rápida
+## Aplicar
 
 ```bash
-sudo pacman -S --needed hyprland waybar wofi kitty swaync hypridle hyprlock wl-clipboard grim slurp
 bash install.sh
 ```
 
-## Aplicar configs
+## Próximo passo
 
-```bash
-stow dotfiles
-```
+Depois que você definir exatamente o que quer em cada pasta,
+montamos o instalador final em **Lua ou Go** para automatizar tudo.
