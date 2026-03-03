@@ -24,8 +24,10 @@ if ! need_cmd stow; then
   sudo pacman -S --needed stow
 fi
 
-BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs)
+BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs nwg-look)
 FONT_PKGS=(ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome)
+THEME_PKGS=(adwaita-icon-theme papirus-icon-theme arc-gtk-theme materia-gtk-theme)
+AUR_PKGS=(waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme)
 
 if [[ "$COMPOSITOR" == "niri" ]]; then
   WM_PKGS=(niri waybar xdg-desktop-portal-gnome xdg-desktop-portal-gtk)
@@ -41,13 +43,13 @@ COMMON_STOW=(ambxst kitty nvim quickshell shell starship thunar yazi gtk fontcon
 
 echo "[+] Compositor target: $COMPOSITOR"
 echo "[+] Installing base packages"
-sudo pacman -S --needed "${BASE_PKGS[@]}" "${FONT_PKGS[@]}" "${WM_PKGS[@]}"
+sudo pacman -S --needed "${BASE_PKGS[@]}" "${FONT_PKGS[@]}" "${THEME_PKGS[@]}" "${WM_PKGS[@]}"
 
-echo "[+] Installing wallpaper stack (AUR): waypaper + mpvpaper"
+echo "[+] Installing AUR stack: wallpaper + GTK themes"
 if need_cmd yay; then
-  yay -S --needed --noconfirm waypaper mpvpaper
+  yay -S --needed --noconfirm "${AUR_PKGS[@]}"
 else
-  echo "[!] yay not found. Install waypaper/mpvpaper manually (AUR)"
+  echo "[!] yay not found. Install manually (AUR): ${AUR_PKGS[*]}"
 fi
 
 echo "[+] Applying common dotfiles"

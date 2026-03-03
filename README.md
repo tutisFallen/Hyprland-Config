@@ -10,6 +10,7 @@ Stack atual:
 - Shell aliases + Starship + fzf + eza + nvim base
 - GTK + Fontconfig (Matugen-friendly)
 - Waypaper + mpvpaper (video/gif wallpaper)
+- nwg-look + temas GTK (Catppuccin/WhiteSur) + ícones Papirus
 
 ## Instalação
 
