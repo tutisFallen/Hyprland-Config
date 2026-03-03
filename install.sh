@@ -3,23 +3,58 @@ set -euo pipefail
 
 need_cmd() { command -v "$1" >/dev/null 2>&1; }
 
+COMPOSITOR="${1:-auto}" # auto|niri|hyprland
+
+if [[ "$COMPOSITOR" == "auto" ]]; then
+  env_lc="${XDG_CURRENT_DESKTOP:-} ${DESKTOP_SESSION:-}"
+  env_lc="${env_lc,,}"
+  if [[ "$env_lc" == *"niri"* ]]; then
+    COMPOSITOR="niri"
+  elif [[ "$env_lc" == *"hypr"* ]]; then
+    COMPOSITOR="hyprland"
+  elif need_cmd niri; then
+    COMPOSITOR="niri"
+  else
+    COMPOSITOR="hyprland"
+  fi
+fi
+
 if ! need_cmd stow; then
-  echo "[+] Instalando stow..."
+  echo "[+] Installing stow..."
   sudo pacman -S --needed stow
 fi
 
-echo "[+] Instalando base CLI/UI..."
-sudo pacman -S --needed kitty yazi thunar fzf eza neovim starship
+BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync)
+FONT_PKGS=(ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome)
 
-if need_cmd yay; then
-  echo "[+] yay detectado (AUR disponível)"
+if [[ "$COMPOSITOR" == "niri" ]]; then
+  WM_PKGS=(niri waybar xdg-desktop-portal-gnome xdg-desktop-portal-gtk)
+  WM_STOW=(niri)
+  WM_REMOVE=(hypr)
 else
-  echo "[!] yay não encontrado (ok por enquanto)"
+  WM_PKGS=(hyprland hypridle hyprlock waybar xdg-desktop-portal-hyprland)
+  WM_STOW=(hypr)
+  WM_REMOVE=(niri)
 fi
 
-echo "[+] Aplicando dotfiles"
-stow -v -R -t "$HOME" dotfiles
+COMMON_STOW=(ambxst kitty nvim quickshell shell starship thunar yazi gtk fontconfig)
+
+echo "[+] Compositor target: $COMPOSITOR"
+echo "[+] Installing packages"
+sudo pacman -S --needed "${BASE_PKGS[@]}" "${FONT_PKGS[@]}" "${WM_PKGS[@]}"
+
+echo "[+] Applying common dotfiles"
+stow -v -R -d dotfiles -t "$HOME" "${COMMON_STOW[@]}"
+
+echo "[+] Applying compositor dotfiles: ${WM_STOW[*]}"
+stow -v -R -d dotfiles -t "$HOME" "${WM_STOW[@]}"
+
+echo "[+] Removing inactive compositor dotfiles: ${WM_REMOVE[*]}"
+for pkg in "${WM_REMOVE[@]}"; do
+  stow -v -D -d dotfiles -t "$HOME" "$pkg" || true
+done
 
 bash ./setup-shell.sh
+fc-cache -fv >/dev/null || true
 
-echo "[✓] Setup aplicado. Abra um novo terminal para carregar aliases/starship."
+echo "[✓] Setup complete. Open a new terminal/session."

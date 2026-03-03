@@ -1,13 +1,14 @@
 # Hyprland-Config (stack personalizada)
 
 Stack atual:
-- Hyprland
+- Niri / Hyprland (auto-detect no install)
 - Kitty (tema glass/tahoe)
 - Yazi
 - Thunar
 - Quickshell
 - Ambxst
 - Shell aliases + Starship + fzf + eza + nvim base
+- GTK + Fontconfig (Matugen-friendly)
 
 ## Instalação
 
@@ -15,13 +16,27 @@ Stack atual:
 bash install.sh
 ```
 
-## Aliases úteis
+Forçar compositor:
 
-- Pacman: `pss`, `psi`, `psr`, `pqs`
-- Yay: `yss`, `ysi`, `yrm`, `yqq`
-- Navegação: `fm` (yazi), `cdf` (cd + fzf)
-- Listing: `ls`, `ll`, `lt` com `eza --icons`
-- Neovim: `v`, `vi`, `vim`, `nv`
+```bash
+bash install.sh niri
+bash install.sh hyprland
+```
+
+O script:
+- instala pacotes base + fontes (Nerd/Emoji)
+- detecta Niri/Hyprland automaticamente
+- aplica só as configs do compositor ativo
+- remove symlinks do compositor inativo
+
+## Modo Bare Repo (opcional)
+
+```bash
+./scripts/bare-repo.sh init https://github.com/<user>/Hyprland-Config.git
+./scripts/bare-repo.sh config status
+```
+
+Isso cria `~/.cfg` (bare) para gerenciar dotfiles direto do `$HOME`.
 
 ## Shell
 

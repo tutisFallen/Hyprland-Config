@@ -1,0 +1,10 @@
+binds {
+    Super+A hotkey-overlay-title="App Launcher: Toggle" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
+    Super+Alt+space repeat=false hotkey-overlay-title="Wallpaper: Next" { spawn "dms" "ipc" "call" "wallpaper" "next"; }
+    Super+Ctrl+space repeat=false hotkey-overlay-title="Wallpaper: Previous" { spawn "dms" "ipc" "call" "wallpaper" "prev"; }
+    Super+D hotkey-overlay-title="Dock: Toggle" { spawn "dms" "ipc" "call" "dock" "toggle"; }
+    Super+F1 hotkey-overlay-title="Settings: Toggle" { spawn "dms" "ipc" "call" "settings" "toggle"; }
+    Super+Y repeat=false hotkey-overlay-title="Wallpaper Browser" { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }
+    Super+E repeat=false { spawn "thunar"; }
+    Super+Return repeat=false { spawn "kitty"; }
+}
