@@ -9,6 +9,7 @@ Stack atual:
 - Ambxst
 - Shell aliases + Starship + fzf + eza + nvim base
 - GTK + Fontconfig (Matugen-friendly)
+- Waypaper + mpvpaper (video/gif wallpaper)
 
 ## Instalação
 
@@ -25,9 +26,14 @@ bash install.sh hyprland
 
 O script:
 - instala pacotes base + fontes (Nerd/Emoji)
+- instala stack de wallpaper (waypaper + mpvpaper)
 - detecta Niri/Hyprland automaticamente
 - aplica só as configs do compositor ativo
 - remove symlinks do compositor inativo
+
+Atalhos (Niri):
+- `Mod+Shift+W` abre o Waypaper (backend mpvpaper)
+- ao iniciar sessão: `waypaper --restore`
 
 ## Modo Bare Repo (opcional)
 

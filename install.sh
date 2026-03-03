@@ -24,7 +24,7 @@ if ! need_cmd stow; then
   sudo pacman -S --needed stow
 fi
 
-BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync)
+BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs)
 FONT_PKGS=(ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome)
 
 if [[ "$COMPOSITOR" == "niri" ]]; then
@@ -37,11 +37,18 @@ else
   WM_REMOVE=(niri)
 fi
 
-COMMON_STOW=(ambxst kitty nvim quickshell shell starship thunar yazi gtk fontconfig)
+COMMON_STOW=(ambxst kitty nvim quickshell shell starship thunar yazi gtk fontconfig waypaper localbin)
 
 echo "[+] Compositor target: $COMPOSITOR"
-echo "[+] Installing packages"
+echo "[+] Installing base packages"
 sudo pacman -S --needed "${BASE_PKGS[@]}" "${FONT_PKGS[@]}" "${WM_PKGS[@]}"
+
+echo "[+] Installing wallpaper stack (AUR): waypaper + mpvpaper"
+if need_cmd yay; then
+  yay -S --needed --noconfirm waypaper mpvpaper
+else
+  echo "[!] yay not found. Install waypaper/mpvpaper manually (AUR)"
+fi
 
 echo "[+] Applying common dotfiles"
 stow -v -R -d dotfiles -t "$HOME" "${COMMON_STOW[@]}"

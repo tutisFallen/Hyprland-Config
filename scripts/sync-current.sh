@@ -12,7 +12,9 @@ mkdir -p \
   dotfiles/fontconfig/.config/fontconfig \
   dotfiles/kitty/.config/kitty \
   dotfiles/thunar/.config/Thunar \
-  dotfiles/nvim/.config/nvim
+  dotfiles/nvim/.config/nvim \
+  dotfiles/waypaper/.config/waypaper \
+  dotfiles/localbin/.local/bin
 
 sync_if_exists() {
   local src="$1"
@@ -43,6 +45,8 @@ sync_file_if_exists "$HOME/.config/fontconfig/fonts.conf" dotfiles/fontconfig/.c
 sync_if_exists "$HOME/.config/kitty/" dotfiles/kitty/.config/kitty/
 sync_if_exists "$HOME/.config/Thunar/" dotfiles/thunar/.config/Thunar/
 sync_if_exists "$HOME/.config/nvim/" dotfiles/nvim/.config/nvim/
+sync_if_exists "$HOME/.config/waypaper/" dotfiles/waypaper/.config/waypaper/
+sync_file_if_exists "$HOME/.local/bin/waypaper-picker" dotfiles/localbin/.local/bin/waypaper-picker
 
 # cleanup runtime backups/artifacts
 find dotfiles -type f -name '*.bak-*' -delete || true
