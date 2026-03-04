@@ -24,7 +24,7 @@ if ! need_cmd stow; then
   sudo pacman -S --needed stow
 fi
 
-BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs nwg-look)
+BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv socat flatpak python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs nwg-look)
 FONT_PKGS=(ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome)
 THEME_PKGS=(adwaita-icon-theme papirus-icon-theme arc-gtk-theme materia-gtk-theme)
 AUR_PKGS=(waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme)
@@ -39,7 +39,21 @@ else
   WM_REMOVE=(niri)
 fi
 
-COMMON_STOW=(ambxst kitty nvim quickshell shell starship thunar yazi gtk fontconfig waypaper localbin)
+COMMON_STOW=(kitty nvim quickshell shell starship thunar yazi gtk fontconfig waypaper localbin)
+
+FLATPAK_APPS=(
+  be.alexandervanhee.gradia
+  com.brave.Browser
+  com.dec05eba.gpu_screen_recorder
+  com.spotify.Client
+  com.vscodium.codium
+  com.vysp3r.ProtonPlus
+  io.github.IshuSinghSE.aurynk
+  io.github.kolunmi.Bazaar
+  io.github.ltiber.Pwall
+  io.github.swordpuffin.wardrobe
+  org.prismlauncher.PrismLauncher
+)
 
 echo "[+] Compositor target: $COMPOSITOR"
 echo "[+] Installing base packages"
@@ -50,6 +64,16 @@ if need_cmd yay; then
   yay -S --needed --noconfirm "${AUR_PKGS[@]}"
 else
   echo "[!] yay not found. Install manually (AUR): ${AUR_PKGS[*]}"
+fi
+
+echo "[+] Installing Flatpaks"
+if ! need_cmd flatpak; then
+  echo "[!] flatpak não encontrado após instalação de pacotes base."
+else
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+  for app in "${FLATPAK_APPS[@]}"; do
+    flatpak install -y flathub "$app" || true
+  done
 fi
 
 echo "[+] Applying common dotfiles"

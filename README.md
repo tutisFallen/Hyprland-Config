@@ -6,7 +6,6 @@ Stack atual:
 - Yazi
 - Thunar
 - Quickshell
-- Ambxst
 - Shell aliases + Starship + fzf + eza + nvim base
 - GTK + Fontconfig (Matugen-friendly)
 - Waypaper + mpvpaper (video/gif wallpaper)
@@ -28,9 +27,11 @@ bash install.sh hyprland
 O script:
 - instala pacotes base + fontes (Nerd/Emoji)
 - instala stack de wallpaper (waypaper + mpvpaper)
+- inclui `socat` (necessário para fluxo de troca/controle de wallpaper)
 - detecta Niri/Hyprland automaticamente
 - aplica só as configs do compositor ativo
 - remove symlinks do compositor inativo
+- instala Flatpaks padrão da stack
 
 Atalhos (Niri):
 - `Mod+Shift+W` abre o Waypaper (backend mpvpaper)
@@ -44,6 +45,40 @@ Atalhos (Niri):
 ```
 
 Isso cria `~/.cfg` (bare) para gerenciar dotfiles direto do `$HOME`.
+
+## Flatpaks padrão
+
+O `install.sh` também garante Flathub e instala:
+
+- be.alexandervanhee.gradia
+- com.brave.Browser
+- com.dec05eba.gpu_screen_recorder
+- com.spotify.Client
+- com.vscodium.codium
+- com.vysp3r.ProtonPlus
+- io.github.IshuSinghSE.aurynk
+- io.github.kolunmi.Bazaar
+- io.github.ltiber.Pwall
+- io.github.swordpuffin.wardrobe
+- org.prismlauncher.PrismLauncher
+
+Comando equivalente manual:
+
+```bash
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub \
+  be.alexandervanhee.gradia \
+  com.brave.Browser \
+  com.dec05eba.gpu_screen_recorder \
+  com.spotify.Client \
+  com.vscodium.codium \
+  com.vysp3r.ProtonPlus \
+  io.github.IshuSinghSE.aurynk \
+  io.github.kolunmi.Bazaar \
+  io.github.ltiber.Pwall \
+  io.github.swordpuffin.wardrobe \
+  org.prismlauncher.PrismLauncher
+```
 
 ## Shell
 
