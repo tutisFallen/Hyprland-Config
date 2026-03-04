@@ -11,6 +11,11 @@ Stack atual:
 - Waypaper + mpvpaper (video/gif wallpaper)
 - nwg-look + temas GTK (Catppuccin/WhiteSur) + ícones Papirus
 
+## Screenshots
+
+![Screenshot 1](assets/screenshots/screenshot-2026-03-04-20-16-23.png)
+![Screenshot 2](assets/screenshots/screenshot-2026-03-04-20-16-35.png)
+
 ## Instalação
 
 ```bash
