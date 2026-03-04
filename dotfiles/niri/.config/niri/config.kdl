@@ -258,6 +258,7 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
+spawn-at-startup "bash" "-lc" "$HOME/scripts/niri-auto-max-vertical.sh"
 spawn-sh-at-startup "waypaper --restore || true"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -584,8 +585,8 @@ binds {
     Mod+Shift+Equal { set-window-height "+10%"; }
 
     // Move the focused window between the floating and the tiling layout.
-    Mod+V       { toggle-window-floating; }
-    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+SPACE      { toggle-window-floating; }
+   // Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
