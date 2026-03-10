@@ -107,7 +107,7 @@ install_aur() {
     return 0
   fi
 
-  local aur_pkgs="waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme"
+  local aur_pkgs="waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme anyrun dgop python-pynvml wlogout ttf-material-symbols-variable-git"
   log "Installing AUR packages via $AUR_HELPER: $aur_pkgs"
   # shellcheck disable=SC2086
   "$AUR_HELPER" -S --needed --noconfirm $aur_pkgs

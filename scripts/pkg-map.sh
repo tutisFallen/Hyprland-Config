@@ -24,7 +24,7 @@ PKG_MAP_ZYPPER[cli]="kitty yazi thunar fzf eza neovim"
 PKG_MAP_XBPS[cli]="kitty yazi thunar fzf eza neovim"
 
 # Desktop helpers
-PKG_MAP_PACMAN[desktop]="mpv playerctl socat flatpak nwg-look"
+PKG_MAP_PACMAN[desktop]="mpv playerctl socat flatpak nwg-look brightnessctl cliphist easyeffects firefox fuzzel gedit grim mission-center nautilus pavucontrol polkit polkit-gnome mate-polkit ptyxis qt6ct slurp swappy tesseract wl-clipboard yad qt6-5compat xorg-xhost jq matugen quickshell"
 PKG_MAP_DNF[desktop]="mpv playerctl socat flatpak nwg-look"
 PKG_MAP_APT[desktop]="mpv playerctl socat flatpak"
 PKG_MAP_ZYPPER[desktop]="mpv playerctl socat flatpak"
@@ -38,7 +38,7 @@ PKG_MAP_ZYPPER[python]="python3-gobject python3-imageio python3-imageio-ffmpeg p
 PKG_MAP_XBPS[python]="python3-gobject python3-imageio python3-imageio-ffmpeg python3-screeninfo python3-platformdirs"
 
 # Fonts
-PKG_MAP_PACMAN[fonts]="ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome"
+PKG_MAP_PACMAN[fonts]="ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-fira-code ttf-inter noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome"
 PKG_MAP_DNF[fonts]="jetbrains-mono-fonts-all google-noto-emoji-fonts google-noto-sans-cjk-fonts fontawesome-fonts-all"
 PKG_MAP_APT[fonts]="fonts-jetbrains-mono fonts-noto-color-emoji fonts-noto-cjk fonts-font-awesome"
 PKG_MAP_ZYPPER[fonts]="jetbrains-mono-fonts noto-coloremoji-fonts noto-sans-cjk-fonts fontawesome-fonts"

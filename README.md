@@ -47,6 +47,8 @@ O script agora:
   - `scripts/install-apps.sh` (Flatpak app set)
 - mantém instalação opcional de Flatpaks
 - em Arch, instala stack AUR quando helper (`yay/paru`) estiver disponível
+- no Arch, inclui extras desktop (quickshell, fuzzel, cliphist, matugen etc.) e fontes adicionais (Inter/Fira Code)
+- no AUR (Arch), inclui também: `anyrun`, `dgop`, `python-pynvml`, `wlogout`, `ttf-material-symbols-variable-git`
 
 Atalhos (Niri):
 - `Mod+Shift+W` abre o Waypaper (backend mpvpaper)
