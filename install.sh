@@ -24,7 +24,7 @@ if ! need_cmd stow; then
   sudo pacman -S --needed stow
 fi
 
-BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv socat flatpak python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs nwg-look)
+BASE_PKGS=(kitty yazi thunar fzf eza neovim starship rsync mpv playerctl socat flatpak python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs nwg-look)
 FONT_PKGS=(ttf-jetbrains-mono-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono noto-fonts noto-fonts-emoji noto-fonts-cjk otf-font-awesome)
 THEME_PKGS=(adwaita-icon-theme papirus-icon-theme arc-gtk-theme materia-gtk-theme)
 AUR_PKGS=(waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme)
