@@ -38,10 +38,13 @@ bash install.sh --no-aur
 ```
 
 O script agora:
-- detecta distro (`pacman`, `dnf`, `apt`) e instala pacotes via `scripts/install-packages.sh`
+- detecta distro (`pacman`, `dnf`, `apt`, `zypper`, `xbps`) e instala pacotes via `scripts/install-packages.sh`
 - usa mapeamento agnóstico por grupo em `scripts/pkg-map.sh`
 - instala `chezmoi` e aplica dotfiles da pasta `home/`
 - detecta Niri/Hyprland automaticamente (ou força por argumento)
+- separa fluxo em:
+  - `scripts/install-core.sh` (base + chezmoi + shell/fonts)
+  - `scripts/install-apps.sh` (Flatpak app set)
 - mantém instalação opcional de Flatpaks
 - em Arch, instala stack AUR quando helper (`yay/paru`) estiver disponível
 

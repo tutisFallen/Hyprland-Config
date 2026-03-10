@@ -41,8 +41,14 @@ detect_pkg_manager() {
     PKG_MANAGER="apt"
     PKG_INSTALL_CMD="sudo apt-get install -y"
     sudo apt-get update -y
+  elif need_cmd zypper; then
+    PKG_MANAGER="zypper"
+    PKG_INSTALL_CMD="sudo zypper --non-interactive install"
+  elif need_cmd xbps-install; then
+    PKG_MANAGER="xbps"
+    PKG_INSTALL_CMD="sudo xbps-install -Sy"
   else
-    echo "No supported package manager found (pacman/dnf/apt)" >&2
+    echo "No supported package manager found (pacman/dnf/apt/zypper/xbps)" >&2
     exit 1
   fi
 }
@@ -53,6 +59,8 @@ pkgs_for() {
     pacman) echo "${PKG_MAP_PACMAN[$group]:-}" ;;
     dnf)    echo "${PKG_MAP_DNF[$group]:-}" ;;
     apt)    echo "${PKG_MAP_APT[$group]:-}" ;;
+    zypper) echo "${PKG_MAP_ZYPPER[$group]:-}" ;;
+    xbps)   echo "${PKG_MAP_XBPS[$group]:-}" ;;
   esac
 }
 
@@ -60,7 +68,7 @@ install_group() {
   local group="$1"; shift || true
   local p
   p="$(pkgs_for "$group")"
-  [[ -n "$p" ]] || { warn "No mapping for group '$group' on $PKG_MANAGER"; return 0; }
+  [[ -n "$p" ]] || { warn "Group '$group' is unavailable or not mapped for '$PKG_MANAGER'; skipping."; return 0; }
   log "Installing [$group]: $p"
   # shellcheck disable=SC2086
   eval "$PKG_INSTALL_CMD $p"
@@ -75,6 +83,8 @@ ensure_chezmoi() {
   case "$PKG_MANAGER" in
     pacman) sudo pacman -S --needed --noconfirm chezmoi ;;
     dnf)    sudo dnf install -y chezmoi ;;
+    zypper) sudo zypper --non-interactive install chezmoi ;;
+    xbps)   sudo xbps-install -Sy chezmoi ;;
     apt)
       if ! sudo apt-get install -y chezmoi; then
         warn "chezmoi package unavailable on apt, using official installer"
