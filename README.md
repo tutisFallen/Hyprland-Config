@@ -16,7 +16,7 @@ Stack atual:
 ![Screenshot 1](assets/screenshots/screenshot-2026-03-04-20-16-23.png)
 ![Screenshot 2](assets/screenshots/screenshot-2026-03-04-20-16-35.png)
 
-## Instalação
+## Instalação (Chezmoi + multi-distro)
 
 ```bash
 bash install.sh
@@ -29,14 +29,21 @@ bash install.sh niri
 bash install.sh hyprland
 ```
 
-O script:
-- instala pacotes base + fontes (Nerd/Emoji)
-- instala stack de wallpaper (waypaper + mpvpaper)
-- inclui `socat` (necessário para fluxo de troca/controle de wallpaper)
-- detecta Niri/Hyprland automaticamente
-- aplica só as configs do compositor ativo
-- remove symlinks do compositor inativo
-- instala Flatpaks padrão da stack
+Flags úteis:
+
+```bash
+bash install.sh --yes
+bash install.sh --no-flatpak
+bash install.sh --no-aur
+```
+
+O script agora:
+- detecta distro (`pacman`, `dnf`, `apt`) e instala pacotes via `scripts/install-packages.sh`
+- usa mapeamento agnóstico por grupo em `scripts/pkg-map.sh`
+- instala `chezmoi` e aplica dotfiles da pasta `home/`
+- detecta Niri/Hyprland automaticamente (ou força por argumento)
+- mantém instalação opcional de Flatpaks
+- em Arch, instala stack AUR quando helper (`yay/paru`) estiver disponível
 
 Atalhos (Niri):
 - `Mod+Shift+W` abre o Waypaper (backend mpvpaper)
