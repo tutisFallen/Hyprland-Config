@@ -49,6 +49,7 @@ O script agora:
 - em Arch, instala stack AUR quando helper (`yay/paru`) estiver disponível
 - no Arch, inclui extras desktop (quickshell, fuzzel, cliphist, matugen etc.) e fontes adicionais (Inter/Fira Code)
 - no AUR (Arch), inclui também: `anyrun`, `dgop`, `python-pynvml`, `wlogout`, `ttf-material-symbols-variable-git`
+- fontes por download opcional: `bash scripts/install-fonts.sh` (Inter Variable + Fira Code)
 
 Atalhos (Niri):
 - `Mod+Shift+W` abre o Waypaper (backend mpvpaper)
