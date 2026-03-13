@@ -94,18 +94,99 @@ ensure_chezmoi() {
   esac
 }
 
+install_python_extras_for_pacman() {
+  [[ "$PKG_MANAGER" == "pacman" ]] || return 0
+
+  # These modules are not available as official Arch packages.
+  # Install them via pip for the current user to avoid pacman "target not found" errors.
+  if ! need_cmd python || ! need_cmd pip; then
+    warn "python/pip not available; skipping pip Python extras"
+    return 0
+  fi
+
+  local pip_pkgs=(imageio-ffmpeg screeninfo)
+  log "Installing Python extras via pip (user): ${pip_pkgs[*]}"
+  python -m pip install --user --upgrade "${pip_pkgs[@]}"
+}
+
+choose_aur_helper() {
+  # If only one helper exists, use it automatically.
+  if need_cmd paru && ! need_cmd yay; then
+    AUR_HELPER="paru"
+    return 0
+  fi
+  if need_cmd yay && ! need_cmd paru; then
+    AUR_HELPER="yay"
+    return 0
+  fi
+
+  # If both exist, ask which one to use.
+  if need_cmd paru && need_cmd yay; then
+    local choice=""
+    if [[ -t 0 ]]; then
+      read -r -p "[pkg] Detectei paru e yay. Qual você quer usar para instalar do AUR? [paru/yay] (padrão: paru): " choice
+    fi
+    choice="${choice,,}"
+    case "$choice" in
+      yay) AUR_HELPER="yay" ;;
+      ""|paru) AUR_HELPER="paru" ;;
+      *)
+        warn "Escolha inválida ('$choice'). Vou usar paru por padrão."
+        AUR_HELPER="paru"
+        ;;
+    esac
+    return 0
+  fi
+
+  # None installed: ask which one to bootstrap.
+  local bootstrap_choice=""
+  if [[ -t 0 ]]; then
+    read -r -p "[pkg] Não encontrei helper AUR. Quer instalar qual? [paru/yay] (padrão: paru): " bootstrap_choice
+  fi
+  bootstrap_choice="${bootstrap_choice,,}"
+  case "$bootstrap_choice" in
+    yay) AUR_HELPER="yay" ;;
+    ""|paru) AUR_HELPER="paru" ;;
+    *)
+      warn "Escolha inválida ('$bootstrap_choice'). Vou instalar paru por padrão."
+      AUR_HELPER="paru"
+      ;;
+  esac
+}
+
+bootstrap_aur_helper_if_needed() {
+  need_cmd "$AUR_HELPER" && return 0
+
+  log "Instalando pré-requisitos para AUR helper: base-devel git"
+  sudo pacman -S --needed --noconfirm base-devel git
+
+  local repo tmpdir pkgdir
+  case "$AUR_HELPER" in
+    paru) repo="https://aur.archlinux.org/paru-bin.git" ;;
+    yay)  repo="https://aur.archlinux.org/yay-bin.git" ;;
+    *)
+      warn "AUR helper inválido: $AUR_HELPER"
+      return 1
+      ;;
+  esac
+
+  tmpdir="$(mktemp -d)"
+  pkgdir="$tmpdir/${AUR_HELPER}-bin"
+
+  log "Baixando e instalando $AUR_HELPER via AUR"
+  git clone --depth 1 "$repo" "$pkgdir"
+  (
+    cd "$pkgdir"
+    makepkg -si --noconfirm
+  )
+}
+
 install_aur() {
   [[ "$PKG_MANAGER" == "pacman" ]] || return 0
   [[ "$INSTALL_AUR" == "true" ]] || { warn "AUR install disabled"; return 0; }
 
-  if need_cmd yay; then
-    AUR_HELPER="yay"
-  elif need_cmd paru; then
-    AUR_HELPER="paru"
-  else
-    warn "No AUR helper found (yay/paru), skipping AUR packages"
-    return 0
-  fi
+  choose_aur_helper
+  bootstrap_aur_helper_if_needed || { warn "Falha ao preparar helper AUR ($AUR_HELPER), pulando AUR"; return 0; }
 
   local aur_pkgs="waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme anyrun dgop python-pynvml wlogout ttf-material-symbols-variable-git"
   log "Installing AUR packages via $AUR_HELPER: $aur_pkgs"
@@ -122,6 +203,7 @@ main() {
   install_group cli
   install_group desktop
   install_group python
+  install_python_extras_for_pacman
   install_group fonts
   install_group themes
   install_group "$COMPOSITOR"

@@ -31,7 +31,7 @@ PKG_MAP_ZYPPER[desktop]="mpv playerctl socat flatpak"
 PKG_MAP_XBPS[desktop]="mpv playerctl socat flatpak"
 
 # Python helpers used by wallpaper/tooling
-PKG_MAP_PACMAN[python]="python-gobject python-imageio python-imageio-ffmpeg python-screeninfo python-platformdirs"
+PKG_MAP_PACMAN[python]="python-gobject python-imageio python-platformdirs python-pip"
 PKG_MAP_DNF[python]="python3-gobject python3-imageio python3-imageio-ffmpeg python3-screeninfo python3-platformdirs"
 PKG_MAP_APT[python]="python3-gi python3-imageio python3-imageio-ffmpeg python3-screeninfo python3-platformdirs"
 PKG_MAP_ZYPPER[python]="python3-gobject python3-imageio python3-imageio-ffmpeg python3-screeninfo python3-platformdirs"
