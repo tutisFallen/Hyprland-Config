@@ -8,10 +8,12 @@ need_cmd() { command -v "$1" >/dev/null 2>&1; }
 
 log() { printf '[pkg] %s\n' "$*"; }
 warn() { printf '[pkg][warn] %s\n' "$*" >&2; }
+error_red() { printf '\033[31m[pkg][erro] %s\033[0m\n' "$*" >&2; }
 
 PKG_MANAGER=""
 PKG_INSTALL_CMD=""
 AUR_HELPER=""
+FAILED_PKGS=()
 
 COMPOSITOR="${1:-auto}"  # auto|niri|hyprland
 INSTALL_AUR="${INSTALL_AUR:-true}"
@@ -64,14 +66,24 @@ pkgs_for() {
   esac
 }
 
+record_failed_pkg() {
+  local origin="$1" pkg="$2"
+  FAILED_PKGS+=("$origin:$pkg")
+  error_red "$origin -> pacote não encontrado/instalável: $pkg (pulando)"
+}
+
 install_group() {
   local group="$1"; shift || true
-  local p
+  local p pkg
   p="$(pkgs_for "$group")"
   [[ -n "$p" ]] || { warn "Group '$group' is unavailable or not mapped for '$PKG_MANAGER'; skipping."; return 0; }
   log "Installing [$group]: $p"
-  # shellcheck disable=SC2086
-  eval "$PKG_INSTALL_CMD $p"
+
+  for pkg in $p; do
+    if ! eval "$PKG_INSTALL_CMD $pkg"; then
+      record_failed_pkg "$group" "$pkg"
+    fi
+  done
 }
 
 ensure_chezmoi() {
@@ -106,6 +118,7 @@ install_python_extras_for_pacman() {
 
   local venv_dir="${XDG_DATA_HOME:-$HOME/.local/share}/hyprland-config/py-venv"
   local pip_pkgs=(imageio-ffmpeg screeninfo)
+  local pip_pkg
 
   if [[ ! -x "$venv_dir/bin/python" ]]; then
     log "Creating Python venv for extras: $venv_dir"
@@ -113,8 +126,12 @@ install_python_extras_for_pacman() {
   fi
 
   log "Installing Python extras in venv: ${pip_pkgs[*]}"
-  "$venv_dir/bin/python" -m pip install --upgrade pip
-  "$venv_dir/bin/python" -m pip install --upgrade "${pip_pkgs[@]}"
+  "$venv_dir/bin/python" -m pip install --upgrade pip || warn "Could not upgrade pip in venv"
+  for pip_pkg in "${pip_pkgs[@]}"; do
+    if ! "$venv_dir/bin/python" -m pip install --upgrade "$pip_pkg"; then
+      record_failed_pkg "python-venv" "$pip_pkg"
+    fi
+  done
 
   log "Python extras installed in venv. Use: $venv_dir/bin/python"
 }
@@ -199,9 +216,27 @@ install_aur() {
   bootstrap_aur_helper_if_needed || { warn "Falha ao preparar helper AUR ($AUR_HELPER), pulando AUR"; return 0; }
 
   local aur_pkgs="waypaper mpvpaper catppuccin-gtk-theme-mocha whitesur-gtk-theme anyrun dgop python-pynvml wlogout ttf-material-symbols-variable-git"
+  local aur_pkg
   log "Installing AUR packages via $AUR_HELPER: $aur_pkgs"
-  # shellcheck disable=SC2086
-  "$AUR_HELPER" -S --needed --noconfirm $aur_pkgs
+
+  for aur_pkg in $aur_pkgs; do
+    if ! "$AUR_HELPER" -S --needed --noconfirm "$aur_pkg"; then
+      record_failed_pkg "aur" "$aur_pkg"
+    fi
+  done
+}
+
+print_failed_summary() {
+  if [[ ${#FAILED_PKGS[@]} -eq 0 ]]; then
+    log "Nenhum pacote falhou 🎉"
+    return 0
+  fi
+
+  error_red "Pacotes que não foram instalados (${#FAILED_PKGS[@]}):"
+  local item
+  for item in "${FAILED_PKGS[@]}"; do
+    error_red " - $item"
+  done
 }
 
 main() {
@@ -221,6 +256,7 @@ main() {
   install_aur
   install_python_extras_for_pacman
 
+  print_failed_summary
   log "Package installation complete"
 }
 
