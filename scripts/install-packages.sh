@@ -97,16 +97,26 @@ ensure_chezmoi() {
 install_python_extras_for_pacman() {
   [[ "$PKG_MANAGER" == "pacman" ]] || return 0
 
-  # These modules are not available as official Arch packages.
-  # Install them via pip for the current user to avoid pacman "target not found" errors.
-  if ! need_cmd python || ! need_cmd pip; then
-    warn "python/pip not available; skipping pip Python extras"
+  # Arch usa PEP 668 (externally-managed), então evitamos pip global/--user.
+  # Criamos um venv dedicado para extras não empacotados no pacman.
+  if ! need_cmd python; then
+    warn "python not available; skipping Python extras venv"
     return 0
   fi
 
+  local venv_dir="${XDG_DATA_HOME:-$HOME/.local/share}/hyprland-config/py-venv"
   local pip_pkgs=(imageio-ffmpeg screeninfo)
-  log "Installing Python extras via pip (user): ${pip_pkgs[*]}"
-  python -m pip install --user --upgrade "${pip_pkgs[@]}"
+
+  if [[ ! -x "$venv_dir/bin/python" ]]; then
+    log "Creating Python venv for extras: $venv_dir"
+    python -m venv "$venv_dir"
+  fi
+
+  log "Installing Python extras in venv: ${pip_pkgs[*]}"
+  "$venv_dir/bin/python" -m pip install --upgrade pip
+  "$venv_dir/bin/python" -m pip install --upgrade "${pip_pkgs[@]}"
+
+  log "Python extras installed in venv. Use: $venv_dir/bin/python"
 }
 
 choose_aur_helper() {
@@ -203,13 +213,13 @@ main() {
   install_group cli
   install_group desktop
   install_group python
-  install_python_extras_for_pacman
   install_group fonts
   install_group themes
   install_group "$COMPOSITOR"
 
   ensure_chezmoi
   install_aur
+  install_python_extras_for_pacman
 
   log "Package installation complete"
 }
